@@ -13,7 +13,7 @@ node_modules/
 
 # Cache directories and files
 npm-cache/
-.yarn/
+.yarn/ 
 .yarn-cache/
 
 # Output from build tools (if applicable)
