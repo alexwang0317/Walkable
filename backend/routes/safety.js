@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db/db'); // Create a db.js file for the pool
+const pool = require('../db/db'); // Ensure this path is correct
 const turf = require('@turf/turf');
 
-router.post('/safety', async (req, res) => {
+router.post('/', async (req, res) => {
   const { routeCoordinates } = req.body;
+
+  if (!routeCoordinates) {
+    return res.status(400).json({ error: 'Missing route coordinates' });
+  }
 
   try {
     // Convert route coordinates to a LineString geometry
@@ -53,8 +57,7 @@ function calculateSafetyScore(crimes) {
   };
 
   crimes.forEach((crime) => {
-    const weight =
-      weights[crime.offense_description] || 1; // Default weight
+    const weight = weights[crime.offense_description] || 1; // Default weight
     score -= weight * 0.1; // Adjust deduction as appropriate
   });
 

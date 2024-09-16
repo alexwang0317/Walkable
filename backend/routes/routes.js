@@ -1,8 +1,10 @@
+// route.js
+
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-router.post('/route', async (req, res) => {
+router.post('/', async (req, res) => {
   const { startLocation, endLocation } = req.body;
 
   // Validate that startLocation and endLocation are provided
