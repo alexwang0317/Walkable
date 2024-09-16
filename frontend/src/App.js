@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Night Walk Safety App</h1>
+      <h1>Walkable? To Uber or not to Uber</h1>
       <InputForm onSubmit={handleFormSubmit} />
       {routeData && <MapDisplay routeData={routeData} crimes={crimes} />}
       {safetyData && <SafetyIndicator safetyData={safetyData} />}
