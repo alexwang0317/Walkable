@@ -17,20 +17,14 @@ function App() {
 
   const handleFormSubmit = async ({ startLocation, endLocation }) => {
     try {
-      // Fetch route data from the backend
       const route = await getRouteData(startLocation, endLocation);
       setRouteData(route);
 
-      // Extract coordinates from the route for safety assessment
-      const routeCoordinates = [];
-      route.legs[0].steps.forEach((step) => {
-        routeCoordinates.push({
-          lat: step.start_location.lat,
-          lng: step.start_location.lng,
-        });
-      });
+      const routeCoordinates = route.legs[0].steps.map((step) => ({
+        lat: step.start_location.lat,
+        lng: step.start_location.lng,
+      }));
 
-      // Fetch safety data from the backend
       const safetyResponse = await getSafetyData(routeCoordinates);
       setSafetyData(safetyResponse.safetyData);
       setCrimes(safetyResponse.crimes);
@@ -41,15 +35,20 @@ function App() {
   };
 
   if (!scriptLoaded) {
-    return <div>Loading Google Maps...</div>;
+    return <div className="loading">Loading Google Maps...</div>;
   }
 
   return (
-    <div className="App">
-      <h1>Walkable? To Uber or not to Uber</h1>
-      <InputForm onSubmit={handleFormSubmit} />
-      {routeData && <MapDisplay routeData={routeData} crimes={crimes} />}
-      {safetyData && <SafetyIndicator safetyData={safetyData} />}
+    <div className="app">
+      <header className="app-header">
+        <h1>Walkable?</h1>
+        <p className="subtitle">To Uber or not to Uber</p>
+      </header>
+      <main className="app-main">
+        <InputForm onSubmit={handleFormSubmit} />
+        {routeData && <MapDisplay routeData={routeData} crimes={crimes} />}
+        {safetyData && <SafetyIndicator safetyData={safetyData} />}
+      </main>
     </div>
   );
 }
